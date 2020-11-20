@@ -120,7 +120,7 @@ Dir["**/*"].each do |file|
 end
 
 # Check for build tool patterns, terminating after build completion if one is matched
-Genius.build_tools.each do |tool|
+Genius.build_tools.each do |name, tool|
   if tool.files.any? {|f| File.exist?(f) && !File.directory?(f)}
     puts "Matched build tool pattern: #{tool.name}"
     tool.build(file_set) # Does not contain all files, so may not be useful.
@@ -132,6 +132,14 @@ end
 group_counts = Genius.build_groups.map do |name, group|
   file_count = group.extensions.inject(0) {|acc, ext| acc += file_set[ext].size}
   [group, file_count]
+end
+
+# check if all patterns match
+if group_counts.all? {|k,v| v.zero?} 
+  with_stdout_as_stderr do
+    puts "No matching build patterns for the current directory"
+    exit 1
+  end
 end
 
 # Build based on commands specified by most populous build group,
