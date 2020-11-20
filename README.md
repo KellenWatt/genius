@@ -38,12 +38,12 @@ then that specific tool's associated commands are used instead of counting files
 
 TODO: Write actual usage documentation, beyond skeleton basics
 
-### Example
+### Examples
 
 Genius specification for Go, assuming all appropriate commands are installed:
 ```ruby
 Genius.register_group("Go", "go") do |files|
-  go build  # files not necessary here, since Go handles this automatically.
+  go :build  # files not necessary here, since Go handles this automatically.
 end
 ``` 
 
