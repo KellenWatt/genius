@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = "genius-builder"
-  s.version = "0.1.1"
+  s.version = "0.2.0"
   s.date = "2020-11-19"
   s.summary = "An intelligent compiler selection tool"
   s.description = "An everyday build tool that does the heavy lifting for you."
