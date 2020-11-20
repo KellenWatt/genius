@@ -120,6 +120,16 @@ Dir["**/*"].each do |file|
   end
 end
 
+# If given the name of an existing pattern, run that instead
+if Genius.build_tools.key? ARGV[0]
+  Genius.build_tools[ARGV[0]].build(file_set)
+  exit
+elsif Genius.build_groups.key? ARGV[0]
+  group = Genius.build_groups[ARGV[0]]
+  group.build(file_set.filter{|k,v| group.extensions.include?(k)})
+  exit
+end
+
 # Check for build tool patterns, terminating after build completion if one is matched
 Genius.build_tools.each do |name, tool|
   if tool.files.any? {|f| File.exist?(f) && !File.directory?(f)}
@@ -146,4 +156,4 @@ end
 # Build based on commands specified by most populous build group,
 # passing only the files with extensions specified by that group.
 group = group_counts.max_by{|k,v| v}[0]
-Genius.build_groups[group.name].build(file_set.filter{|k,v| group.extensions.include?(k)})
+group.build(file_set.filter{|k,v| group.extensions.include?(k)})
