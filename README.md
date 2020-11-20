@@ -39,6 +39,8 @@ then that specific tool's associated commands are used instead of counting files
 TODO: Write actual usage documentation, beyond skeleton basics
 
 ### Examples
+Note that each of these are implied to be in separate files, but that isn't 
+strictly necessary.
 
 Genius specification for Go, assuming all appropriate commands are installed:
 ```ruby
@@ -59,7 +61,8 @@ Genius.register_group("C++", "cpp", "hpp", "h") do |files|
 end
 ``` 
 
-Genius specification for `make`:
+Genius specification for `make`. This looks for one of "makefile" and "Makefile" 
+in the current directory:
 ```ruby
 Genius.register_build_tool("make", "makefile", "Makefile") do |files|
   make  # It's that simple
