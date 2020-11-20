@@ -42,14 +42,14 @@ TODO: Write actual usage documentation, beyond skeleton basics
 
 Genius specification for Go, assuming all appropriate commands are installed:
 ```ruby
-Genius.register_build_group("Go", "go") do |files|
+Genius.register_group("Go", "go") do |files|
   go build  # files not necessary here, since Go handles this automatically.
 end
 ``` 
 
 Genius specification for C++, using g++:
 ```ruby
-Genius.register_build_group("C++", "cpp", "hpp", "h") do |files|
+Genius.register_group("C++", "cpp", "hpp", "h") do |files|
   # For standard a.out
   cmd("g++", *files["cpp"], *files["hpp"])
 
@@ -58,4 +58,11 @@ Genius.register_build_group("C++", "cpp", "hpp", "h") do |files|
   # cmd("g++", *files["cpp"], *files.["hpp"], "-o", Dir.pwd)
 end
 ``` 
+
+Genius specification for `make`:
+```ruby
+Genius.register_build_tool("make", "makefile", "Makefile") do |files|
+  make  # It's that simple
+end
+```
 
