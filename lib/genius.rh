@@ -1,4 +1,5 @@
 #!/usr/bin/env rash
+require "rash"
 
 module Genius
   @@build_tools = {}
