@@ -13,46 +13,46 @@ module Genius
   end
 
   # Build tool methods
-  def self.register_build_tool(name, files, &command)
-    @@build_tools[name] = BuildTool.new(name, files, &command)
+  def self.register_build_tool(name, *files, &command)
+    @@build_tools[name.to_s] = BuildTool.new(name, *files, &command)
   end
 
   def self.define_build_tool_files(name, *files)
-    @@build_tools[name].files = files.flatten.map(&:to_s)
+    @@build_tools[name.to_s].files = files.flatten.map(&:to_s)
   end
 
   def self.add_build_tool_file(name, file)
-    @@build_tools[name].files << file.to_s
+    @@build_tools[name.to_s].files << file.to_s
   end
 
   def self.define_build_tool_command(name, &command)
-    @@build_tools[name].commands = [command]
+    @@build_tools[name.to_s].commands = [command]
   end
 
   def self.add_build_tool_command(name, &command)
-    @@build_tools[name].commands << command
+    @@build_tools[name.to_s].commands << command
   end
 
   # Build group methods
-  def self.register_group(name, extensions, &command)
-    @@build_groups[name] = BuildGroup.new(name, extensions, &command)
+  def self.register_group(name, *extensions, &command)
+    @@build_groups[name.to_s] = BuildGroup.new(name, *extensions, &command)
   end
  
   def self.define_group_extensions(name, *exts)
-    @@build_groups[name].extensions = exts.flatten.map {|e| e.to_s.delete_prefiox(".")}
+    @@build_groups[name.to_s].extensions = exts.flatten.map {|e| e.to_s.delete_prefiox(".")}
   end
 
   def self.add_group_extension(name, ext)
     # requires 2.5
-    @@build_groups[name].extensions << ext.to_s.delete_prefix(".")
+    @@build_groups[name.to_s].extensions << ext.to_s.delete_prefix(".")
   end
 
   def self.define_group_command(name, &command)
-    @@build_groups[name].commands = [command]
+    @@build_groups[name.to_s].commands = [command]
   end
 
   def self.add_group_command(name, &command)
-    @@build_groups[name].commands << command
+    @@build_groups[name.to_s].commands << command
   end
 
 
@@ -107,15 +107,6 @@ Dir[$GENIUS_HOME + "/*"].each do |config|
   exit unless load config
 end
 
-# Check for build tool patterns, terminating after build completion if one is matched
-Genius.build_tools.each do |tool|
-  if tool.files.all? {|f| File.exist?(f) && !File.directory?(f)}
-    puts "Matched build tool pattern: #{tool.name}"
-    tool.build
-    exit
-  end
-end
-
 # Sort files by extension. Only files that have a name and extension are considered.
 # i.e. Files that have no extension or are only extensions (including extensionless 
 # dotfiles) will not be considered. The final extension is used if multiple are 
@@ -128,11 +119,22 @@ Dir["**/*"].each do |file|
   end
 end
 
-# Get counts of files matching each build group.
-group_counts = Genius.build_groups.map do |group|
-  file_count = group.extensions.inject(0) {|acc, ext| acc += file_set[ext].size}
-  [group.name, file_count]
+# Check for build tool patterns, terminating after build completion if one is matched
+Genius.build_tools.each do |tool|
+  if tool.files.any? {|f| File.exist?(f) && !File.directory?(f)}
+    puts "Matched build tool pattern: #{tool.name}"
+    tool.build(file_set) # Does not contain all files, so may not be useful.
+    exit
+  end
 end
 
-# Build based on commands specified by most populous build group
-Genius.build_groups[group_counts.max_by{|k,v| v}[0]].build
+# Get counts of files matching each build group.
+group_counts = Genius.build_groups.map do |name, group|
+  file_count = group.extensions.inject(0) {|acc, ext| acc += file_set[ext].size}
+  [group, file_count]
+end
+
+# Build based on commands specified by most populous build group,
+# passing only the files with extensions specified by that group.
+group = group_counts.max_by{|k,v| v}[0]
+Genius.build_groups[group.name].build(file_set.filter{|k,v| group.extensions.include?(k)})
