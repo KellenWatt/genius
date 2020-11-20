@@ -1,0 +1,9 @@
+# Rubygems build file
+*.gem
+
+# Vim files
+*.swp
+*.swo
+
+# custom backup format
+.*.*
