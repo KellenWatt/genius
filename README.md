@@ -18,6 +18,6 @@ along with the wiki describing how to use it.
 
 Basically, it's Ruby, and it has all of the power that provides, but you can 
 use it as a convenient interactive command shell and call executables like 
-methods. There are also more-readable forms of standard shell functionality, 
+methods. There are also human-friendly forms of standard shell functionality, 
 like I/O redirection and pipelining.
 
