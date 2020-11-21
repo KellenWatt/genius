@@ -63,6 +63,7 @@ module Genius
     attr_accessor :name, :files, :commands
     def initialize(name, *files, &command)
       @name = name
+      # @files = files.flatten.map{|f| /^#{f.gsub("*", ".*")}$/}
       @files = files.flatten.map(&:to_s)
       @commands = [command]
     end
@@ -116,7 +117,7 @@ file_set = Hash.new {|h,k| h[k] = []}
 Dir["**/*"].each do |file|
   split_name = file.split(".")
   if split_name.size > 1
-    file_set[split_name[-1]] << file
+    file_set[split_name.last] << file
   end
 end
 
@@ -132,7 +133,8 @@ end
 
 # Check for build tool patterns, terminating after build completion if one is matched
 Genius.build_tools.each do |name, tool|
-  if tool.files.any? {|f| File.exist?(f) && !File.directory?(f)}
+  files = tool.files.flat_map {|f| Dir[f]}
+  if files.any? {|f| File.exist?(f) && !File.directory?(f)} 
     puts "Matched build tool pattern: #{tool.name}"
     tool.build(file_set) # Does not contain all files, so may not be useful.
     exit
