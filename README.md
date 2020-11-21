@@ -53,11 +53,11 @@ Genius specification for C++, using g++:
 ```ruby
 Genius.register_group("C++", "cpp", "hpp", "h") do |files|
   # For standard a.out
-  cmd("g++", *files["cpp"], *files["hpp"])
+  cmd("g++", files.values_at("cpp", "hpp"))
 
   # For naming executable after current dir
   # You can use both of these, but you will end up with two executables
-  # cmd("g++", *files["cpp"], *files.["hpp"], "-o", Dir.pwd)
+  # cmd("g++", files.values_at("cpp", "hpp"), "-o", Dir.pwd)
 end
 ``` 
 
@@ -66,6 +66,18 @@ in the current directory:
 ```ruby
 Genius.register_build_tool("make", "makefile", "Makefile") do |files|
   make  # It's that simple
+end
+```
+
+Genius specification for building and installing rubygems projects without bundler:
+```ruby
+# Note the globbing operator used for a filename
+Genius.register_build_tool("gem", "*.gemspec") do |files|
+  # You need to call system directly because `gem` is a pseudo-builtin, 
+  # which messes with Rash.
+  if system("gem", "build", files["gemspec"].first)
+    system("gem", "install", Dir["*.gem"].sort.last) # sort to ensure most recent last, if multiple.
+  end
 end
 ```
 
