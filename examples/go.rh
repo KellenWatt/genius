@@ -1,0 +1,3 @@
+Genius.register_group(:go, "go") do |files|
+  go :build
+end

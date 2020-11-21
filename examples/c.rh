@@ -1,0 +1,3 @@
+Genius.register_group("c", "c", "h") do |files|
+  gcc files.values.flatten, "-o", Dir.pwd
+end

@@ -1,0 +1,3 @@
+Genius.register_build_tool(:make, "makefile", "Makefile") do
+  make
+end

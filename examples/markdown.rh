@@ -1,0 +1,5 @@
+Genius.register_group("markdown", "md") do |files|
+  files["md"].each do |md|
+    pandoc "-o", md.split(".")[...-1].join + ".pdf", md
+  end
+end

@@ -1,0 +1,5 @@
+Genius.register_build_tool("gem", "*.gemspec") do  |files| 
+  if system("gem", "build", files["gemspec"].first)
+    system("gem", "install", Dir["*.gem"].sort.last) #sort to be safe
+  end
+end
