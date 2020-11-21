@@ -74,7 +74,7 @@ end
 ### C++
 ```ruby
 Genius.register_group("C++", "cpp", "hpp", "h") do |files|
-  # `cmd` is Rash's way of calling commands with Ruby-invalid characters.
+  # `cmd` is how Rash calls commands with Ruby-identifier incompatible characters
   cmd("g++", files.values_at("cpp", "hpp"))
 end
 ``` 
