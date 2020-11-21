@@ -2,7 +2,7 @@
 require "rash"
 
 if /--?v(ersion)?/ =~ ARGV[0] 
-  puts "Genius builder - version 0.3.0"
+  puts "Genius builder - version 0.3.1"
   exit
 end
 
