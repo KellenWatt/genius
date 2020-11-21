@@ -1,6 +1,11 @@
 #!/usr/bin/env rash
 require "rash"
 
+if /--?v(ersion)?/ =~ ARGV[0] 
+  puts "Genius builder - version 0.3.0"
+  exit
+end
+
 module Genius
   @@build_tools = {}
   @@build_groups = {}
@@ -63,7 +68,6 @@ module Genius
     attr_accessor :name, :files, :commands
     def initialize(name, *files, &command)
       @name = name
-      # @files = files.flatten.map{|f| /^#{f.gsub("*", ".*")}$/}
       @files = files.flatten.map(&:to_s)
       @commands = [command]
     end
@@ -94,7 +98,7 @@ end
 $GENIUS_HOME = File.expand_path("~/.genius")
 
 # Sanity check for if genius's dependencies exist.
-if !Dir.exist?($GENIUS_HOME)
+unless Dir.exist?($GENIUS_HOME)
   with_stdout_as_stderr do 
     puts ".genius - No such directory"
     puts "\nTo use genius builder, put config files in the ~/.genius directory."
