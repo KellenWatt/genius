@@ -139,7 +139,7 @@ end
 Genius.build_tools.each do |name, tool|
   files = tool.files.flat_map {|f| Dir[f]}
   if files.any? {|f| File.exist?(f) && !File.directory?(f)} 
-    puts "Matched build tool pattern: #{tool.name}"
+    puts "\033[1;32mMatched build tool pattern: #{tool.name}\033[0m"
     tool.build(file_set) # Does not contain all files, so may not be useful.
     exit
   end
