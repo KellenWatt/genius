@@ -12,7 +12,7 @@ Genius can also be built on top of other build tools, similar to `make`, so
 it has all the power, without most of the hassle.
 
 ### Wait, what is this .rh file?
-.rh is the standard extension for Rash, a command line language built 
+.rh is the standard extension for Rash, a command line scripting language built 
 on top of Ruby. The source can be found [here](https://github.com/KellenWatt/rash), 
 along with the wiki describing how to use it.
 

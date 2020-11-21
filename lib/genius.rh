@@ -115,8 +115,8 @@ end
 
 # Sort files by extension. Only files that have a name and extension are considered.
 # i.e. Files that have no extension or are only extensions (including extensionless 
-# dotfiles) will not be considered. The final extension is used if multiple are 
-# present.
+# dotfiles) will not be considered. If multiple extensions are present, only the 
+# last one is considered.
 file_set = Hash.new {|h,k| h[k] = []}
 Dir["**/*"].each do |file|
   split_name = file.split(".")
@@ -151,7 +151,7 @@ group_counts = Genius.build_groups.map do |name, group|
   [group, file_count]
 end
 
-# check if all patterns match
+# check if any patterns match, failing if not
 if group_counts.all? {|k,v| v.zero?} 
   with_stdout_as_stderr do
     puts "No matching build patterns for the current directory"
