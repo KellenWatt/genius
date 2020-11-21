@@ -23,11 +23,11 @@ like I/O redirection and pipelining.
 
 ## Usage
 Genius looks for text files in the `~/.genius` directory. These files can 
-contain two different kinds of build specifications, groups and tools. Both
+contain two different kinds of build specifications: groups and tools. Both
 kinds of build specs are Rash scripts using the Genius DSL.
 
 Each build spec has a block of commands that provides a hash containing 
-relevant files. Build groups give all releveant files, specified by the 
+relevant files. Build groups give all relevant files, specified by the 
 provided extensions, and build tools give all files with extensions.
 
 ### Build Groups
@@ -43,7 +43,7 @@ A build group is selected when it contains more files with its extensions than
 any other build group, and no build tool applies to the current directory. For 
 example, take a project tree that contains C++ and markdown files, with build 
 groups registered for both. Genius will count the number of files relevant to 
-both, then choose the one that has a higher count.
+both, then choose the one that has a higher count, probably C++.
 
 ### Build Tools
 Build tools are generally useful for when there is a specific tool that is better 
@@ -56,10 +56,10 @@ and providing a name for the group, the file patterns it should look for, and
 a block specifying the commands to run if that group is selected. 
 
 File patterns used in build tools use bash-like globbing. If any files in the 
-current directory match any of the patterns in of a build tool, that tool is 
+current directory match any of the patterns of a build tool, that tool is 
 selected, and no more are considered. If there is overlap between build tools, 
 the first registered is used. This is probably resolved alphabetically by source 
-file name.
+file name, though that isn't guaranteed.
 
 ## Examples
 Note that each of these are implied to be in separate files, but that isn't 
