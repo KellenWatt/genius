@@ -63,7 +63,8 @@ file name, though that isn't guaranteed.
 
 ## Examples
 Note that each of these are implied to be in separate files, but that isn't 
-strictly necessary.
+strictly necessary. You can find versions of these and further examples in 
+the `examples` folder above (these are not included in the gem).
 
 ### Go
 ```ruby
